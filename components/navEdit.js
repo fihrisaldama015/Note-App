@@ -19,7 +19,7 @@ const Navbar = (props) => {
       </Link>
       <div
         onClick={() => props.randomize()}
-        className="bg-blue-700/10 py-3 px-6 rounded-full font-medium hover:cursor-pointer"
+        className="bg-blue-700/10 py-3 px-6 rounded-full font-normal tracking-wide hover:cursor-pointer"
       >
         Theme
       </div>

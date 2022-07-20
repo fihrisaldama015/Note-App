@@ -22,7 +22,8 @@ h5,
 h6,
 input,
 a,
-textarea {
+textarea,
+div {
   @apply antialiased subpixel-antialiased;
 }
 
