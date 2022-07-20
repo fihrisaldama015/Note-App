@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Navbar from "../../components/navEdit";
 import { convertDate } from "../add";
 import { Color } from "../../components/pallete";
@@ -14,6 +14,10 @@ const ViewDetail = () => {
   const [date, setDate] = useState("");
   const [bg, setBg] = useState("");
   const [isSaved, setIsSaved] = useState(false);
+  const [height, setHeight] = useState(300);
+  const [heightTitle, setHeightTitle] = useState(60);
+  const ref = useRef(null);
+  const refTitle = useRef(null);
 
   const router = useRouter();
   const id = router.query.id;
@@ -31,6 +35,22 @@ const ViewDetail = () => {
     };
     getNoteById();
   }, [id]);
+
+  useEffect(() => {
+    if (content) {
+      const element = ref.current;
+      // console.log(element.scrollHeight, "useEffect()");
+      setHeight(element.scrollHeight);
+    }
+  }, [content]);
+
+  useEffect(() => {
+    if (title) {
+      const element = refTitle.current;
+      // console.log(element.scrollHeight, "useEffect() 2");
+      setHeightTitle(element.scrollHeight);
+    }
+  }, [title]);
 
   const randomizeBg = (param) => {
     if (!bg) {
@@ -69,41 +89,51 @@ const ViewDetail = () => {
       />
       {bg ? (
         <form
-          className="flex flex-col [&>*]:border-0  pt-24 xs:pt-0"
+          className="flex flex-col [&>*]:border-0  pt-24 xs:pt-0 min-h-screen"
           style={{ animation: "popup 0.3s" }}
         >
           <div className="flex justify-center ">
             <div
               className={`
             ${isSaved ? "flex" : "hidden"}
-            absolute flex-row items-center gap-2 text-slate-800 bg-white/50 w-min px-6 py-3 rounded-xl font-bold shadow-lg shadow-slate-500/10`}
-              style={{ animation: "slideDown .2s" }}
+            absolute  text-slate-800 bg-slate-50 w-min px-6 py-3 rounded-xl font-bold shadow-lg shadow-slate-500/30`}
+              style={{
+                animation: "slideDown .2s",
+              }}
             >
-              <BsFillPatchCheckFill className="fill-green-500" />
-              <p>Updated</p>
+              <div className="translate-x-[-0.5em] flex flex-row items-center gap-2">
+                <BsFillPatchCheckFill className="fill-green-500" />
+                <p>Updated</p>
+              </div>
             </div>
           </div>
-          <div className="px-6">
-            <p className="text-slate-500 font-mono font-light">{date}</p>
-          </div>
-          <input
-            type="text"
+          <textarea
+            type="textarea"
             name="title"
             id="title"
+            style={{ height: `${heightTitle}px`, resize: "none" }}
+            ref={refTitle}
             className="text-5xl font-bold text-slate-800 tracking-wide focus:ring-0 overflow-auto bg-transparent"
             placeholder="Title..."
             onChange={(e) => setTitle(e.target.value)}
             value={title}
           />
+          <div className="px-3 mt-6">
+            <p className="text-slate-600 tracking-widest font-normal">{date}</p>
+          </div>
           <textarea
             type="textarea"
             name="content"
             id="content"
-            className="text-2xl min-h-screen antialiased font-medium text-slate-800 focus:ring-0 leading-10 bg-transparent"
+            className={`text-2xl antialiased font-medium text-slate-800 focus:ring-0 leading-10 bg-transparent`}
+            ref={ref}
+            style={{ height: `${height}px`, resize: "none" }}
             placeholder="Write your notes here..."
-            onChange={(e) => setContent(e.target.value)}
-            value={content}
-          />
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+            value={height ? content : "loading..."}
+          ></textarea>
         </form>
       ) : (
         <span className="flex items-center justify-center h-[90vh]">
