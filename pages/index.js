@@ -37,7 +37,7 @@ export default function Home() {
       <Navbar title="Notes" />
       {isLoading === false ? (
         <div
-          className="grid xs:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 pt-36 xs:pt-0 auto-rows-max grid-flow-row min-h-[70vh]"
+          className="grid xs:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4 md:gap-6 pt-36 xs:pt-0 auto-rows-max grid-flow-row min-h-[70vh]"
           style={{ animation: "popup .5s,slideDown .5s" }}
           key={note}
         >
@@ -46,7 +46,8 @@ export default function Home() {
               bg={note.bg}
               title={note.title}
               key={id}
-              date={note.date}
+              date={note.updated_at}
+              dateString={note.date}
               delete={() => deleteNote(note._id)}
               to={`/view/${note._id}`}
             >
@@ -69,7 +70,7 @@ export default function Home() {
       )}
       <footer className="flex gap-3 items-center justify-center mt-32">
         <a
-          href="https://github.com/fihrisaldama015"
+          href="https://github.com/fihrisaldama015/Note-App"
           target="_blank"
           rel="noreferrer"
         >
