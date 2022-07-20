@@ -1,14 +1,32 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AiOutlineEllipsis,
   AiOutlineDelete,
   AiOutlinePushpin,
+  AiOutlineClose,
 } from "react-icons/ai";
+import { IoMdClose } from "react-icons/io";
 import { Color } from "./pallete";
+import { convertDate } from "../pages/add";
 
 const Card = (props) => {
   const [isShow, setShow] = useState(false);
+  const [tanggal, setTanggal] = useState("");
+
+  const dateNow = new Date().getDate();
+  const date = parseInt(props.date.substring(8, 10));
+  const jam = (parseInt(props.date.substring(11, 13)) + 24 + 7) % 24;
+  useEffect(() => {
+    if (jam <= 7) date++;
+    if (dateNow === date) {
+      setTanggal("Today");
+    } else if (dateNow - date === 1) {
+      setTanggal("Yesterday");
+    } else {
+      setTanggal(props.dateString);
+    }
+  }, []);
 
   const handleSelect = (selected) => {
     if (selected === "add") {
@@ -24,8 +42,6 @@ const Card = (props) => {
     }
   };
 
-  // const selectedBg = props.bg;
-
   const bg = Color.pallete[props.bg];
   const titleColor = props.bg !== "white" ? "text-slate-800" : "text-slate-800";
   const textColor =
@@ -37,18 +53,21 @@ const Card = (props) => {
       <div className="bg-red-500 flex justify-end">
         {/* 3 Dot */}
         <div
-          className="absolute transition-all hover:bg-blue-800/10 rounded-2xl p-1"
-          onClick={() => setShow(true)}
+          className="absolute transition-all bg-slate-50 hover:bg-slate-100 shadow-md rounded-full p-1"
+          onClick={() => setShow(!isShow)}
         >
-          <AiOutlineEllipsis size={25} />
+          {!isShow ? (
+            <AiOutlineEllipsis size={25} />
+          ) : (
+            <IoMdClose size={25} className="fill-slate-500" />
+          )}
         </div>
         {/* Dropdown */}
         <div
-          className={`absolute bg-white right-[7] rounded-lg [&>*]:p-3 [&>*]:rounded-lg shadow-lg shadow-blue-300/20 ${
+          className={`absolute bg-white right-[7] rounded-lg [&>*]:p-3 [&>*]:pr-6 [&>*]:rounded-lg shadow-lg shadow-blue-300/20 mt-12 ${
             !isShow && "hidden"
           }`}
           style={{ animation: "popup .2s" }}
-          onMouseLeave={() => setShow(false)}
         >
           <div
             className="flex-row flex items-center gap-2 text-yellow-600 font-medium tracking-wide hover:bg-yellow-50"
@@ -69,7 +88,7 @@ const Card = (props) => {
       <Link href={props.to || "/"}>
         <div>
           <h1
-            className={`text-2xl font-bold antialiased mb-4 tracking-wide overflow-hidden text-ellipsis ${titleColor}`}
+            className={`text-2xl font-bold antialiased mb-4 tracking-wide overflow-hidden max-w-[80%] text-ellipsis ${titleColor}`}
           >
             {props.title || "Title"}
           </h1>
@@ -79,7 +98,7 @@ const Card = (props) => {
             {props.children}
           </pre>
           <div className={`text-xs font-normal mt-4 ${textColor}`}>
-            {props.date || "A few times ago."}
+            {tanggal}
           </div>
         </div>
       </Link>
