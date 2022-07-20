@@ -27,7 +27,12 @@ const Add = () => {
   }, []);
 
   useEffect(() => {
-    isSaved && setsavedOnce(true);
+    let time = setTimeout(() => {
+      isSaved && setsavedOnce(true);
+    }, 2000);
+    return () => {
+      clearTimeout(time);
+    };
   }, [isSaved]);
 
   useEffect(() => {
@@ -90,7 +95,7 @@ const Add = () => {
           >
             <div className="translate-x-[-0.5em] flex flex-row items-center gap-2">
               <BsFillPatchCheckFill className="fill-green-500" />
-              <p>Saved</p>
+              {savedOnce ? <p>Updated</p> : <p>Saved</p>}
             </div>
           </div>
         </div>
