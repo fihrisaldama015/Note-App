@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import mongoose from "mongoose";
 
 const ConnectDB = () => {
@@ -6,8 +7,7 @@ const ConnectDB = () => {
     useUnifiedTopology: true,
   };
   // const databaseUrl = "mongodb://127.0.0.1:27017/note";
-  const databaseUrl =
-    "mongodb+srv://admin:admin@cluster0.uyd38mu.mongodb.net/note?retryWrites=true&w=majority";
+  const databaseUrl = process.env.MONGODB_URL;
   try {
     mongoose.connect(databaseUrl, databaseConfig);
     console.log("MongoDB Connected Successfully...");
