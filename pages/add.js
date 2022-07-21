@@ -26,14 +26,13 @@ const Add = () => {
     randomizeBg();
   }, []);
 
-  useEffect(() => {
-    let time = setTimeout(() => {
-      isSaved && setsavedOnce(true);
-    }, 2000);
-    return () => {
-      clearTimeout(time);
-    };
-  }, [isSaved]);
+  // useEffect(() => {
+  //   let time = setTimeout(() => {
+  //   }, 2000);
+  //   return () => {
+  //     clearTimeout(time);
+  //   };
+  // }, [isSaved]);
 
   useEffect(() => {
     if (content) {
@@ -71,6 +70,7 @@ const Add = () => {
       setIsSaved(true);
       setTimeout(() => {
         setIsSaved(false);
+        setsavedOnce(true);
       }, 2000);
       // console.log("BERHASIL POST");
     } catch (error) {
