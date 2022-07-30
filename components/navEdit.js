@@ -4,7 +4,7 @@ import { AiOutlineLeft, AiOutlineSave } from "react-icons/ai";
 const Navbar = (props) => {
   return (
     <div
-      className={`flex px-3 pb-6 xs:pb-12 pt-6 items-center justify-between flex-row xs:relative fixed top-0 left-0 w-full xs:shadow-none shadow-xl shadow-slate-300/10 ${props.bg}
+      className={`flex px-3 xs:px-32 pb-6 xs:pb-12 pt-6 items-center justify-between flex-row xs:relative fixed top-0 left-0 w-full xs:shadow-none shadow-xl shadow-slate-300/10 ${props.bg}
       }`}
     >
       {props.title && (
@@ -13,7 +13,10 @@ const Navbar = (props) => {
         </h1>
       )}
       <Link href="/">
-        <div className="bg-blue-700/10 p-3 rounded-full text-xl font-medium hover:cursor-pointer hover:bg-blue-700/40 transition-all">
+        <div
+          className="bg-blue-700/10 p-3 rounded-full text-xl font-medium hover:cursor-pointer hover:bg-blue-700/40 transition-all"
+          onClick={() => props.submit()}
+        >
           <AiOutlineLeft size={30} />
         </div>
       </Link>
