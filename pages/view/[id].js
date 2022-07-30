@@ -73,7 +73,7 @@ const ViewDetail = () => {
       setIsSaved(true);
       setTimeout(() => {
         setIsSaved(false);
-      }, 2000);
+      }, 1000);
       return updatedNote;
     } catch (error) {
       console.log(error.message);
@@ -96,7 +96,7 @@ const ViewDetail = () => {
             <div
               className={`
             ${isSaved ? "flex" : "hidden"}
-            absolute  text-slate-800 bg-slate-50 w-min px-6 py-3 rounded-xl font-bold shadow-lg shadow-slate-500/30`}
+            fixed text-slate-800 bg-slate-50 w-min px-6 py-3 rounded-xl font-bold shadow-lg shadow-slate-500/30`}
               style={{
                 animation: "slideDown .2s",
               }}
@@ -113,19 +113,19 @@ const ViewDetail = () => {
             id="title"
             style={{ height: `${heightTitle}px`, resize: "none" }}
             ref={refTitle}
-            className="text-5xl font-bold text-slate-800 tracking-wide focus:ring-0 overflow-auto bg-transparent"
+            className="text-5xl font-bold text-slate-800 tracking-wide focus:ring-0 overflow-auto bg-transparent xs:mx-32"
             placeholder="Title..."
             onChange={(e) => setTitle(e.target.value)}
             value={title}
           />
-          <div className="px-3 mt-6">
+          <div className="px-3 mt-6 xs:mx-32">
             <p className="text-slate-600 tracking-widest font-normal">{date}</p>
           </div>
           <textarea
             type="textarea"
             name="content"
             id="content"
-            className={`text-2xl antialiased font-medium text-slate-800 focus:ring-0 leading-10 bg-transparent`}
+            className={`text-2xl antialiased font-medium text-slate-800 focus:ring-0 leading-10 bg-transparent xs:mx-32`}
             ref={ref}
             style={{ height: `${height}px`, resize: "none" }}
             placeholder="Write your notes here..."

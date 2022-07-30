@@ -26,18 +26,9 @@ const Add = () => {
     randomizeBg();
   }, []);
 
-  // useEffect(() => {
-  //   let time = setTimeout(() => {
-  //   }, 2000);
-  //   return () => {
-  //     clearTimeout(time);
-  //   };
-  // }, [isSaved]);
-
   useEffect(() => {
     if (content) {
       const element = ref.current;
-      // console.log(element.scrollHeight, "useEffect() 1");
       setHeight(element.scrollHeight);
     }
   }, [content]);
@@ -45,7 +36,6 @@ const Add = () => {
   useEffect(() => {
     if (title) {
       const element = refTitle.current;
-      // console.log(element.scrollHeight, "useEffect() 2");
       setHeightTitle(element.scrollHeight);
     }
   }, [title]);
@@ -61,21 +51,17 @@ const Add = () => {
     try {
       if (savedOnce) {
         const updatedData = await axios.patch(`/api/note/${id}`, data);
-        // console.log(updatedData);
       } else {
         const savedData = await axios.post("/api/note", data);
-        // console.log(savedData.data._id);
         setId(savedData.data._id);
       }
       setIsSaved(true);
       setTimeout(() => {
         setIsSaved(false);
         setsavedOnce(true);
-      }, 2000);
-      // console.log("BERHASIL POST");
+      }, 1000);
     } catch (error) {
       console.log(error);
-      // console.log("GAGAL POST");
     }
   };
   return (
@@ -90,7 +76,7 @@ const Add = () => {
           <div
             className={`${
               isSaved ? "flex" : "hidden"
-            } absolute flex-row items-center gap-2 text-slate-800 bg-white w-min px-6 py-3 rounded-xl font-bold shadow-lg shadow-slate-500/10`}
+            } fixed flex-row items-center gap-2 text-slate-800 bg-white w-min px-6 py-3 rounded-xl font-bold shadow-lg shadow-slate-500/10`}
             style={{ animation: "slideDown .2s" }}
           >
             <div className="translate-x-[-0.5em] flex flex-row items-center gap-2">
@@ -105,7 +91,7 @@ const Add = () => {
           id="title"
           style={{ height: `${heightTitle}px`, resize: "none" }}
           ref={refTitle}
-          className="text-5xl font-bold text-slate-800 tracking-wide focus:ring-0 overflow-auto bg-transparent"
+          className="text-5xl font-bold text-slate-800 tracking-wide focus:ring-0 overflow-auto bg-transparent xs:mx-32"
           placeholder="Title..."
           onChange={(e) => setTitle(e.target.value)}
           value={title}
@@ -116,7 +102,7 @@ const Add = () => {
           id="content"
           style={{ height: `${height}px`, resize: "none" }}
           ref={ref}
-          className="text-2xl antialiased font-medium text-slate-800 focus:ring-0 leading-10 bg-transparent"
+          className="text-2xl antialiased font-medium text-slate-800 focus:ring-0 leading-10 bg-transparent xs:mx-32"
           placeholder="Write your notes here..."
           onChange={(e) => setContent(e.target.value)}
           value={content}
