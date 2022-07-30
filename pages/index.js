@@ -16,9 +16,10 @@ export default function Home() {
   }, []);
 
   const getAllNote = async () => {
-    const res = await axios.get("/api/note").then(setIsLoading(false));
+    const res = await axios.get("/api/note");
     const data = await res.data;
     setNote(data);
+    setIsLoading(false);
     return data;
   };
 
@@ -38,7 +39,7 @@ export default function Home() {
       {isLoading === false ? (
         <div
           className="grid xs:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4 md:gap-6 pt-36 xs:pt-0 auto-rows-max grid-flow-row min-h-[70vh]"
-          style={{ animation: "popup .5s,slideDown .5s" }}
+          style={{ animation: "popup .5s,slideDown .3s" }}
           key={note}
         >
           {note.map((note, id) => (
@@ -57,12 +58,10 @@ export default function Home() {
         </div>
       ) : (
         <span className="flex items-center justify-center h-[90vh]">
-          {/* <svg className="animate-spin"> */}
           <AiOutlineLoading3Quarters
             className="animate-spin fill-blue-500 m-3"
             size={25}
           />
-          {/* </svg> */}
           <h1 className="font-normal text-slate-600 text-xl ">
             Loading your notes...
           </h1>
