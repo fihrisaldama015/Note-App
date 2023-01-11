@@ -9,22 +9,30 @@ import axios from "axios";
 
 export async function getServerSideProps(context) {
   const res = await axios.get(`${process.env.BASE_URL}/api/note`);
-  const data = await res.data;
+  const ALL_NOTES = await res.data;
   return {
-    props: { data },
+    props: { ALL_NOTES },
   };
 }
 
-export default function Home({ data }) {
-  const [note, setNote] = useState([]);
+export default function Home({ ALL_NOTES }) {
+  const [note, setNote] = useState(ALL_NOTES);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    data ? setIsLoading(false) : null;
-  }, [data]);
+    ALL_NOTES ? setIsLoading(false) : null;
+  }, [ALL_NOTES]);
+
+  const refreshNote = async () => {
+    const { data } = await axios.get("/api/note");
+    setNote(data);
+    setIsLoading(false);
+  };
 
   const deleteNote = async (idNote) => {
     await axios.delete(`/api/note/${idNote}`);
-    getAllNote();
+    setIsLoading(true);
+    refreshNote();
   };
 
   return (
@@ -43,7 +51,7 @@ export default function Home({ data }) {
           className="grid xs:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4 md:gap-6 pt-36 xs:pt-0 auto-rows-max grid-flow-row min-h-[70vh]"
           style={{ animation: "popup .5s,slideDown .3s" }}
         >
-          {data.map((note, id) => (
+          {note.map((note, id) => (
             <Card
               bg={note.bg}
               title={note.title}
