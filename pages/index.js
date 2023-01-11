@@ -7,21 +7,20 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BsGithub } from "react-icons/bs";
 import axios from "axios";
 
-export default function Home() {
+export async function getServerSideProps(context) {
+  const res = await axios.get(`${process.env.BASE_URL}/api/note`);
+  const data = await res.data;
+  return {
+    props: { data },
+  };
+}
+
+export default function Home({ data }) {
   const [note, setNote] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
-    getAllNote();
-  }, []);
-
-  const getAllNote = async () => {
-    const res = await axios.get("/api/note");
-    const data = await res.data;
-    setNote(data);
-    setIsLoading(false);
-    return data;
-  };
+    data ? setIsLoading(false) : null;
+  }, [data]);
 
   const deleteNote = async (idNote) => {
     await axios.delete(`/api/note/${idNote}`);
@@ -43,9 +42,8 @@ export default function Home() {
         <div
           className="grid xs:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4 md:gap-6 pt-36 xs:pt-0 auto-rows-max grid-flow-row min-h-[70vh]"
           style={{ animation: "popup .5s,slideDown .3s" }}
-          key={note}
         >
-          {note.map((note, id) => (
+          {data.map((note, id) => (
             <Card
               bg={note.bg}
               title={note.title}
